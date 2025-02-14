@@ -50,6 +50,7 @@ def get_modality_name(modality,
     elif modality == "uni_modal":
         feature_name = image_feature_name
     return os.path.join(
+        modality,
         get_backbone_name(clip_encoder),
         feature_name
     )
@@ -88,6 +89,7 @@ def get_save_dir(args):
         get_logit_name(
             args.logit
         ),
+        args.experiment_name
     )
     return save_dir
 
@@ -231,7 +233,7 @@ def validate(logit_head, image_encoder, val_loader, device="cuda"):
             image = image.to(device)
             image_label = image_label.to(device)
             image_feature = image_encoder(image)
-            logit = logit_head(image_feature)
+            logit = logit_head(image_feature) # linear classifrier
             pred = torch.argmax(logit, dim=1)
             val_acc += torch.sum(pred == image_label).item()
             val_count += image_label.size(0)
@@ -294,7 +296,9 @@ def main(args):
         args.feature_dir,
         args.clip_encoder,
         args.text_layer_idx,
-        args.text_augmentation
+        args.text_augmentation,
+        args.experiment_name,
+
     )
     text_features = torch.load(text_features_path)
     # text_features['features'] = torch.nn.functional.normalize(text_features['features'], dim=1)
@@ -328,6 +332,7 @@ def main(args):
             args.image_augmentation,
             image_views=args.image_views,
         )
+        ## Actual Few Shot examples
         image_features = torch.load(image_features_path)
         train_features = torch.cat([ccrop_features['train']['features'], image_features['train']['features']], dim=0)
         train_labels = torch.cat([ccrop_features['train']['labels'], image_features['train']['labels']], dim=0)
@@ -354,7 +359,7 @@ def main(args):
     )
     
     save_dir = get_save_dir(args)
-
+    import pdb; pdb.set_trace()
     hyperparams = HYPER_DICT[args.hyperparams]
     # filter out invalid batch sizes
     VALID_BATCH_SIZES = get_valid_batch_sizes(hyperparams, text_dataset, image_train_dataset, modality=args.modality)
@@ -386,6 +391,7 @@ def main(args):
                     if os.path.exists(test_result_path):
                         print(f"Already exists: {hyperparams_str} {cur_count}/{experiment_count}")
                         test_result_dict = torch.load(test_result_path)
+                        print(test_result_dict)
                         continue
                     else:
                         print(f"Starting: {hyperparams_str} {cur_count}/{experiment_count}")

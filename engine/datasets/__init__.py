@@ -1,5 +1,7 @@
 from engine.datasets.oxford_pets import OxfordPets
+from engine.datasets.oxford_pets_gn import OxfordPetsGN
 from engine.datasets.oxford_flowers import OxfordFlowers
+from engine.datasets.oxford_flowers_gn import OxfordFlowersGN
 from engine.datasets.fgvc_aircraft import FGVCAircraft
 from engine.datasets.dtd import DescribableTextures
 from engine.datasets.eurosat import EuroSAT
@@ -13,11 +15,14 @@ from engine.datasets.imagenetv2 import ImageNetV2
 from engine.datasets.imagenet_sketch import ImageNetSketch
 from engine.datasets.imagenet_a import ImageNetA
 from engine.datasets.imagenet_r import ImageNetR
-
+from engine.datasets.cifar_10 import CIFAR10
+from engine.datasets.cifar_10_gn import CIFAR10_GN
 
 dataset_classes = {
     "oxford_pets": OxfordPets,
+    "oxford_pets_gn": OxfordPetsGN,
     "oxford_flowers": OxfordFlowers,
+    "oxford_flowers_gn": OxfordFlowersGN,
     "fgvc_aircraft": FGVCAircraft,
     "dtd": DescribableTextures,
     "eurosat": EuroSAT,
@@ -31,4 +36,6 @@ dataset_classes = {
     "imagenet_sketch": ImageNetSketch,
     "imagenet_a": ImageNetA,
     "imagenet_r": ImageNetR,
+    "cifar_10" : CIFAR10,
+    "cifar_10_gn" : CIFAR10_GN,
 }

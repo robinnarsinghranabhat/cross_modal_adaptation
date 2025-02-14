@@ -20,6 +20,21 @@ parser.add_argument(
     default=default.DATA_DIR,
     help="where the dataset is saved",
 )
+
+parser.add_argument(
+    "--cross_dataset",
+    type=str,
+    default="",
+    help="where the dataset is saved",
+)
+
+parser.add_argument(
+    "--experiment_name",
+    type=str,
+    default="",
+    help="a custom identifier to separate experiments",
+)
+
 parser.add_argument(
     "--indices_dir",
     type=str,

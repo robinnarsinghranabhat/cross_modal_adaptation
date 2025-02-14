@@ -84,10 +84,12 @@ def get_text_features_path(dataset,
                            feature_dir,
                            clip_encoder,
                            text_layer_idx,
-                           text_augmentation):
+                           text_augmentation,
+                           experiment_name):
     text_features_path = os.path.join(
         get_text_encoder_dir(feature_dir, clip_encoder, text_layer_idx),
         dataset,
+        experiment_name,
         f"{text_augmentation}.pth")
     return text_features_path
 
@@ -192,9 +194,10 @@ def prepare_text_features(clip_model, args, lab2cname,device="cuda"):
         args.feature_dir,
         args.clip_encoder,
         args.text_layer_idx,
-        args.text_augmentation
+        args.text_augmentation,
+        args.experiment_name,
     )
-
+    import pdb; pdb.set_trace()
     makedirs(os.path.dirname(text_features_path))
 
     if os.path.exists(text_features_path):

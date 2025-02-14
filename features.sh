@@ -43,16 +43,18 @@ TOTAL=$(( TOTAL * ${#IMAGE_VIEWS[@]} ))
 
 declare -a DATASETS=(
                     #  "imagenet"
-                     "caltech101"
+                    #  "caltech101"
                     #  "dtd"
                     #  "eurosat"
                     #  "fgvc_aircraft"
                     #  "food101"
-                     "oxford_flowers"
-                     "oxford_pets"
+                    #  "oxford_flowers"
+                    #  "oxford_pets"
                     #  "stanford_cars"
                     #  "sun397"
                     #  "ucf101"
+                    "cifar_10"
+                    "cifar_10_gn"
                      )
 TOTAL=$(( TOTAL * ${#DATASETS[@]} ))
 
