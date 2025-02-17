@@ -9,7 +9,7 @@ TOTAL=$(( TOTAL * ${#ENCODERS[@]} ))
 
 declare -a IMAGE_LAYER_IDX=(
                    "0"
-                   "1"
+                #    "1"
                 )
 TOTAL=$(( TOTAL * ${#IMAGE_LAYER_IDX[@]} ))
 
@@ -43,27 +43,39 @@ TOTAL=$(( TOTAL * ${#IMAGE_VIEWS[@]} ))
 
 declare -a DATASETS=(
                     #  "imagenet"
-                    #  "caltech101"
-                    #  "dtd"
+                     "caltech101"
+                     "dtd"
                     #  "eurosat"
                     #  "fgvc_aircraft"
                     #  "food101"
-                    #  "oxford_flowers"
-                    #  "oxford_pets"
+                     "oxford_flowers"
+                     "oxford_pets"
                     #  "stanford_cars"
                     #  "sun397"
                     #  "ucf101"
-                    "cifar_10"
-                    "cifar_10_gn"
+                    # "cifar_10"
+                    # "cifar_10_gn"
                      )
 TOTAL=$(( TOTAL * ${#DATASETS[@]} ))
+
+declare -a NOISE_TYPES=(
+                    ""
+                    "gaussian_noise"
+                    "gaussian_noise--1"
+                     )
+TOTAL=$(( TOTAL * ${#NOISE_TYPES[@]} ))
+
+# declare -a EXPERIMENT_NAMES=(
+#                     "1"
+#                      )
+# TOTAL=$(( TOTAL * ${#EXPERIMENT_NAMES[@]} ))
 
 declare -a ALL_SHOTS=(
     "1"
     "2"
     "4"
-    "8"
-    "16"
+    # "8"
+    # "16"
 )
 TOTAL=$(( TOTAL * ${#ALL_SHOTS[@]} ))
 
@@ -85,6 +97,8 @@ echo "IMAGE_VIEWS: ${IMAGE_VIEWS[@]}"
 echo "DATASETS: ${DATASETS[@]}"
 echo "ALL_SHOTS: ${ALL_SHOTS[@]}"
 echo "ALL_SEEDS: ${ALL_SEEDS[@]}"
+echo "NOISE_TYPES: ${NOISE_TYPES[@]}"
+# echo "EXPERIMENT_NAMES: ${EXPERIMENT_NAMES[@]}"
 echo "TOTAL: $TOTAL"
 
 COUNTER=1
@@ -116,19 +130,34 @@ do
                                 for SEED in "${ALL_SEEDS[@]}"
                                 do
                                     echo "SEED: $SEED"
-                                    echo "COUNTER: $COUNTER/$TOTAL"
-                                    echo " "
-                                    COUNTER=$(( COUNTER + 1 ))
-                                    python features.py \
-                                    --dataset ${DATASET} \
-                                    --train-shot ${SHOTS} \
-                                    --clip-encoder ${ENCODER} \
-                                    --image-layer-idx ${IMAGE_LAYER} \
-                                    --text-layer-idx ${TEXT_LAYER} \
-                                    --image-augmentation ${IMAGE_AUG} \
-                                    --text-augmentation ${TEXT_AUG} \
-                                    --image-views ${IMAGE_VIEW} \
-                                    --seed ${SEED}
+                                    for NOISE_TYPE in "${NOISE_TYPES[@]}"
+                                        do
+                                            # echo "NOISE_TYPE: $NOISE_TYPE"
+                                            # for EXP_NAME in "${EXPERIMENT_NAMES[@]}"
+                                            #     do
+                                                    # echo "EXP_NAME: $EXP_NAME"
+                                                    echo "COUNTER: $COUNTER/$TOTAL"
+                                                    echo " "
+                                                    COUNTER=$(( COUNTER + 1 ))
+                                                    COMMAND="python features.py \
+                                                    --dataset ${DATASET} \
+                                                    --train-shot ${SHOTS} \
+                                                    --clip-encoder ${ENCODER} \
+                                                    --image-layer-idx ${IMAGE_LAYER} \
+                                                    --text-layer-idx ${TEXT_LAYER} \
+                                                    --image-augmentation ${IMAGE_AUG} \
+                                                    --text-augmentation ${TEXT_AUG} \
+                                                    --image-views ${IMAGE_VIEW} \
+                                                    --seed ${SEED}" \
+                                                    # Add --noise_type only if it's not an empty string
+                                                    if [ -n "${NOISE_TYPE}" ]; then
+                                                        COMMAND+=" --noise_type ${NOISE_TYPE}"
+                                                    fi
+                                                    echo $COMMAND
+                                                    # Execute the command
+                                                    eval $COMMAND
+                                                # done
+                                        done
                                 done
                             done
                         done

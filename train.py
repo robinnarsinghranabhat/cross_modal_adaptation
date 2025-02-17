@@ -66,6 +66,8 @@ def get_logit_name(logit):
 
 
 def get_save_dir(args):
+    if args.eval_noise_type:
+        args.result_dir = "cross_eval_results"
     save_dir = os.path.join(
         args.result_dir,
         get_benchmark_name(
@@ -73,6 +75,7 @@ def get_save_dir(args):
             args.train_shot,
             args.seed
         ),
+        args.eval_noise_type,
         get_modality_name(
             args.modality,
             args.clip_encoder,
@@ -277,6 +280,11 @@ def main(args):
         print("Using CPU device")
         device = torch.device("cpu")
 
+    splitted_arg = args.eval_noise_type.split('--')
+    if len(splitted_arg) == 2:
+        args.experiment_name = '_'.join(splitted_arg)
+        args.eval_noise_type = splitted_arg[0]
+
     image_encoder_dir = get_image_encoder_dir(
         args.feature_dir,
         args.clip_encoder,
@@ -298,7 +306,6 @@ def main(args):
         args.text_layer_idx,
         args.text_augmentation,
         args.experiment_name,
-
     )
     text_features = torch.load(text_features_path)
     # text_features['features'] = torch.nn.functional.normalize(text_features['features'], dim=1)
@@ -314,6 +321,7 @@ def main(args):
         args.clip_encoder,
         args.image_layer_idx,
         "none",
+        # noise_type=args.noise_type # I don't want to train on noisy-features ! 
     )
     ccrop_features = torch.load(ccrop_features_path)
 
@@ -331,6 +339,7 @@ def main(args):
             args.image_layer_idx,
             args.image_augmentation,
             image_views=args.image_views,
+            # noise_type=args.noise_type # don't want to train on noisy-features
         )
         ## Actual Few Shot examples
         image_features = torch.load(image_features_path)
@@ -350,7 +359,8 @@ def main(args):
         args.dataset,
         args.feature_dir,
         args.clip_encoder,
-        args.image_layer_idx
+        args.image_layer_idx,
+        noise_type=args.eval_noise_type, # want this ! test on noisy features
     )
     test_features = torch.load(test_features_path)
     test_dataset = TensorDataset(
@@ -358,8 +368,8 @@ def main(args):
         test_features['labels']
     )
     
+    # import pdb; pdb.set_trace()
     save_dir = get_save_dir(args)
-    import pdb; pdb.set_trace()
     hyperparams = HYPER_DICT[args.hyperparams]
     # filter out invalid batch sizes
     VALID_BATCH_SIZES = get_valid_batch_sizes(hyperparams, text_dataset, image_train_dataset, modality=args.modality)

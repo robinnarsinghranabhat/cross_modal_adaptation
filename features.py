@@ -7,7 +7,7 @@ import torch
 from engine.tools.utils import makedirs, set_random_seed
 from engine.transforms.default import build_transform
 from engine.datasets.utils import DatasetWrapper, get_few_shot_setup_name, get_few_shot_benchmark
-from engine.templates import get_templates
+from engine.templates import get_templates, get_custom_template
 from engine import clip
 from engine.clip import partial_model
 
@@ -48,10 +48,11 @@ def get_image_features_path(dataset,
                             clip_encoder,
                             image_layer_idx,
                             image_augmentation,
-                            image_views=1):
+                            image_views=1,
+                            noise_type=""):
     image_features_path = os.path.join(
         get_image_encoder_dir(feature_dir, clip_encoder, image_layer_idx),
-        dataset,
+        dataset, noise_type,
         get_view_name(image_augmentation, image_views),
         f"{get_few_shot_setup_name(train_shot, seed)}.pth")
     return image_features_path
@@ -60,10 +61,12 @@ def get_image_features_path(dataset,
 def get_test_features_path(dataset,
                            feature_dir,
                            clip_encoder,
-                           image_layer_idx):
+                           image_layer_idx,
+                           noise_type=""):
     test_features_path = os.path.join(
         get_image_encoder_dir(feature_dir, clip_encoder, image_layer_idx),
         dataset,
+        noise_type,
         "test.pth"
     )
     return test_features_path
@@ -95,7 +98,7 @@ def get_text_features_path(dataset,
 
 
 
-def extract_text_features(dataset, text_augmentation, text_encoder, lab2cname, device="cuda"):
+def extract_text_features(dataset, text_augmentation, text_encoder, lab2cname, custom_template=None, device="cuda"):
     # Extract text features from CLIP
     features_dict = {
         'features': None,
@@ -104,7 +107,7 @@ def extract_text_features(dataset, text_augmentation, text_encoder, lab2cname, d
         'prompts': {},
         'lab2cname': lab2cname,
     }
-    templates = get_templates(dataset, text_augmentation)
+    templates = get_templates(dataset, text_augmentation, custom_template)
     text_encoder.feature_extractor.eval()
     with torch.no_grad():
         for label, cname in lab2cname.items():
@@ -127,7 +130,7 @@ def extract_text_features(dataset, text_augmentation, text_encoder, lab2cname, d
 
 
 
-def extract_features(image_encoder, data_source, transform, num_views=1, test_batch_size=32, num_workers=4, device="cuda"):
+def extract_features(image_encoder, data_source, transform, num_views=1, test_batch_size=32, num_workers=4, device="cuda", cmd_args=None):
     features_dict = {
         'features': torch.Tensor(),
         'labels': torch.Tensor(),
@@ -137,7 +140,7 @@ def extract_features(image_encoder, data_source, transform, num_views=1, test_ba
     #   Setup DataLoader
     ######################################
     loader = torch.utils.data.DataLoader(
-        DatasetWrapper(data_source, transform=transform),
+        DatasetWrapper(data_source, transform=transform, cmd_args=cmd_args),
         batch_size=test_batch_size,
         sampler=None,
         shuffle=False,
@@ -168,7 +171,7 @@ def extract_features(image_encoder, data_source, transform, num_views=1, test_ba
     return features_dict
 
 
-def prepare_text_features(clip_model, args, lab2cname,device="cuda"):
+def prepare_text_features(clip_model, args, lab2cname, device="cuda"):
     text_encoder_dir = get_text_encoder_dir(
         args.feature_dir,
         args.clip_encoder,
@@ -197,7 +200,7 @@ def prepare_text_features(clip_model, args, lab2cname,device="cuda"):
         args.text_augmentation,
         args.experiment_name,
     )
-    import pdb; pdb.set_trace()
+
     makedirs(os.path.dirname(text_features_path))
 
     if os.path.exists(text_features_path):
@@ -211,8 +214,17 @@ def prepare_text_features(clip_model, args, lab2cname,device="cuda"):
             'classnames': [],
         }
         print(f"Extracting features for texts ...")
+
+        # For cross-modal trianing
+        # By default, custom_template is None. Defaults are present.
+        # We can choose between user's custom provided template, OR,
+        # Select from set of prepared templates
+        
+        if not args.custom_template and (args.experiment_name and args.noise_type):
+            args.custom_template = get_custom_template(args.dataset, args.experiment_name, args.noise_type)
+
         text_features = extract_text_features(
-            args.dataset, args.text_augmentation, text_encoder, lab2cname, device=device)
+            args.dataset, args.text_augmentation, text_encoder, lab2cname, custom_template=args.custom_template ,device=device)
         torch.save(text_features, text_features_path)
 
 
@@ -250,7 +262,8 @@ def prepare_few_shot_image_features(clip_model, args, benchmark_train, benchmark
         args.clip_encoder,
         args.image_layer_idx,
         args.image_augmentation,
-        image_views=args.image_views
+        image_views=args.image_views,
+        noise_type=args.noise_type,
     )
 
     makedirs(os.path.dirname(image_features_path))
@@ -275,13 +288,13 @@ def prepare_few_shot_image_features(clip_model, args, benchmark_train, benchmark
         image_features['train'] = extract_features(
             image_encoder, benchmark_train, 
             train_transform, num_views=num_views, test_batch_size=args.test_batch_size, num_workers=args.num_workers,
-            device=device)
+            device=device, cmd_args=args)
         
         print(f"Extracting features for val split ...")
         image_features['val'] = extract_features(
             image_encoder, benchmark_val,
             test_transform, num_views=1, test_batch_size=args.test_batch_size, num_workers=args.num_workers,
-            device=device)
+            device=device, cmd_args=args)
     
         torch.save(image_features, image_features_path)
 
@@ -293,7 +306,8 @@ def prepare_test_image_features(clip_model, args, benchmark_test, device="cuda")
         args.dataset,
         args.feature_dir,
         args.clip_encoder,
-        args.image_layer_idx
+        args.image_layer_idx,
+        noise_type=args.noise_type,
     )
 
     makedirs(os.path.dirname(test_features_path))
@@ -306,7 +320,7 @@ def prepare_test_image_features(clip_model, args, benchmark_test, device="cuda")
         test_features = extract_features(
             image_encoder, 
             benchmark_test, test_transform,
-            num_views=1, test_batch_size=args.test_batch_size, num_workers=args.num_workers, device=device)
+            num_views=1, test_batch_size=args.test_batch_size, num_workers=args.num_workers, device=device, cmd_args=args)
         torch.save(test_features, test_features_path)
 
 
@@ -336,7 +350,8 @@ def main(args):
         args.indices_dir,
         args.dataset,
         args.train_shot,
-        args.seed
+        args.seed,
+        args.noise_type,
     )
 
     ########################################
@@ -351,8 +366,23 @@ def main(args):
     ########################################
     #   Feature Extraction
     ########################################
+    # import pdb; pdb.set_trace()
+    # if args.noise_type:
+    #     noise_dataset = args.dataset + '_' + args.noise_type
+        ## Copy contents of dataset to noise_dataset
+        ## Overwrite the images
+
+    ## noise_type : gaussian_noise, gaussian_noise 1
+    ## second one means, use another text prompt
+    splitted_arg = args.noise_type.split('--')
+    if len(splitted_arg) == 2:
+        args.experiment_name = '_'.join(splitted_arg)
+        args.noise_type = splitted_arg[0]
+
+
     prepare_text_features(clip_model, args, few_shot_benchmark['lab2cname'], device=device)
 
+    ## This two modules  deal with applying noises to images ! 
     prepare_few_shot_image_features(clip_model, args, few_shot_benchmark['train'], few_shot_benchmark['val'], device=device)
 
     prepare_test_image_features(clip_model, args, few_shot_benchmark['test'], device=device)

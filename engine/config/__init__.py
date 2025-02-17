@@ -64,6 +64,31 @@ parser.add_argument(
     choices=dataset_classes.keys(),
     help="number of train shot",
 )
+
+parser.add_argument(
+    "--noise_type",
+    type=str,
+    default="",
+    # choices=dataset_classes.keys(),
+    help="Type of Noise : 'gaussian_noise, shot_noise ...' From CIFAR-C",
+)
+
+parser.add_argument(
+    "--eval_noise_type",
+    type=str,
+    default="",
+    # choices=dataset_classes.keys(),
+    help="Type of Noise : 'gaussian_noise, shot_noise ...' From CIFAR-C",
+)
+
+parser.add_argument(
+    "--custom-template",
+    type=str,
+    default="",
+    # choices=dataset_classes.keys(),
+    help="Use custom template for labels.",
+)
+
 parser.add_argument(
     "--train-shot",
     type=int,
@@ -199,3 +224,9 @@ parser.add_argument(
     ],
     help="hyperparams sweep",
 )
+
+
+corruptions = ["gaussian_noise", "shot_noise", "impulse_noise", "defocus_blur",
+                    "glass_blur", "motion_blur", "zoom_blur", "snow", "frost", "fog",
+                    "brightness", "contrast", "elastic_transform", "pixelate", "jpeg_compression",
+                    "speckle_noise", "gaussian_blur", "spatter", "saturate"]

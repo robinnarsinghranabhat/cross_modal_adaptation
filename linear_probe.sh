@@ -27,7 +27,7 @@ declare -a TEXT_AUGS=(
 TOTAL=$(( TOTAL * ${#TEXT_AUGS[@]} ))
 
 declare -a IMAGE_AUGS=(
-                    #   "none"
+                      "none"
                       "flip" 
                     #   "randomcrop"
                      )
@@ -41,17 +41,17 @@ TOTAL=$(( TOTAL * ${#IMAGE_VIEWS[@]} ))
 
 
 declare -a DATASETS=(
-                     "imagenet"
-                     "caltech101"
+                    #  "imagenet"
+                    #  "caltech101"
                      "dtd"
-                     "eurosat"
-                     "fgvc_aircraft"
-                     "food101"
-                     "oxford_flowers"
-                     "oxford_pets"
-                     "stanford_cars"
-                     "sun397"
-                     "ucf101"
+                    #  "eurosat"
+                    #  "fgvc_aircraft"
+                    #  "food101"
+                    #  "oxford_flowers"
+                    #  "oxford_pets"
+                    #  "stanford_cars"
+                    #  "sun397"
+                    #  "ucf101"
                      )
 TOTAL=$(( TOTAL * ${#DATASETS[@]} ))
 
@@ -59,8 +59,8 @@ declare -a ALL_SHOTS=(
     "1"
     "2"
     "4"
-    "8"
-    "16"
+    # "8"
+    # "16"
 )
 TOTAL=$(( TOTAL * ${#ALL_SHOTS[@]} ))
 
@@ -74,7 +74,7 @@ declare -a ALL_SEEDS=(
 TOTAL=$(( TOTAL * ${#ALL_SEEDS[@]} ))
 
 declare -a MODALITIES=(
-    # "uni_modal"
+    "uni_modal"
     "cross_modal"
 )
 TOTAL=$(( TOTAL * ${#MODALITIES[@]} ))
@@ -104,6 +104,13 @@ declare -a HYPERS=(
 )
 TOTAL=$(( TOTAL * ${#HYPERS[@]} ))
 
+declare -a NOISE_TYPES=(
+                    ""
+                    "gaussian_noise"
+                    "gaussian_noise--1"
+                     )
+TOTAL=$(( TOTAL * ${#NOISE_TYPES[@]} ))
+
 echo "ENCODERS: ${ENCODERS[@]}"
 echo "IMAGE_LAYER_IDX: ${IMAGE_LAYER_IDX[@]}"
 echo "TEXT_LAYER_IDX: ${TEXT_LAYER_IDX[@]}"
@@ -118,6 +125,7 @@ echo "HEADS: ${HEADS[@]}"
 echo "INITS: ${INITS[@]}"
 echo "LOGITS: ${LOGITS[@]}"
 echo "HYPERS: ${HYPERS[@]}"
+echo "NOISE_TYPES: ${NOISE_TYPES[@]}"
 echo "TOTAL: $TOTAL"
 
 COUNTER=1
@@ -164,24 +172,35 @@ do
                                                     for MODALITY in "${MODALITIES[@]}"
                                                     do
                                                         echo "MODALITY: $MODALITY"
-                                                        echo "COUNTER: $COUNTER/$TOTAL"
-                                                        echo " "
-                                                        COUNTER=$(( COUNTER + 1 ))
-                                                        python train.py \
-                                                        --dataset ${DATASET} \
-                                                        --train-shot ${SHOTS} \
-                                                        --clip-encoder ${ENCODER} \
-                                                        --image-layer-idx ${IMAGE_LAYER} \
-                                                        --text-layer-idx ${TEXT_LAYER} \
-                                                        --image-augmentation ${IMAGE_AUG} \
-                                                        --text-augmentation ${TEXT_AUG} \
-                                                        --image-views ${IMAGE_VIEW} \
-                                                        --seed ${SEED} \
-                                                        --classifier_head ${HEAD} \
-                                                        --classifier_init ${INIT} \
-                                                        --logit ${LOGIT} \
-                                                        --hyperparams ${HYPER} \
-                                                        --modality ${MODALITY}
+                                                        for NOISE_TYPE in "${NOISE_TYPES[@]}"
+                                                            do
+                                                                echo "NOISE_TYPE: $NOISE_TYPE"
+                                                                echo "COUNTER: $COUNTER/$TOTAL"
+                                                                echo " "
+                                                                COUNTER=$(( COUNTER + 1 ))
+                                                                COMMAND="python train.py \
+                                                                --dataset ${DATASET} \
+                                                                --train-shot ${SHOTS} \
+                                                                --clip-encoder ${ENCODER} \
+                                                                --image-layer-idx ${IMAGE_LAYER} \
+                                                                --text-layer-idx ${TEXT_LAYER} \
+                                                                --image-augmentation ${IMAGE_AUG} \
+                                                                --text-augmentation ${TEXT_AUG} \
+                                                                --image-views ${IMAGE_VIEW} \
+                                                                --seed ${SEED} \
+                                                                --classifier_head ${HEAD} \
+                                                                --classifier_init ${INIT} \
+                                                                --logit ${LOGIT} \
+                                                                --hyperparams ${HYPER} \
+                                                                --modality ${MODALITY}" \
+                                                                # Add --noise_type only if it's not an empty string
+                                                                if [ -n "${NOISE_TYPE}" ]; then
+                                                                    COMMAND+=" --eval_noise_type ${NOISE_TYPE}"
+                                                                fi
+                                                                echo $COMMAND
+                                                                # Execute the command
+                                                                eval $COMMAND
+                                                            done
                                                     done
                                                 done
                                             done
