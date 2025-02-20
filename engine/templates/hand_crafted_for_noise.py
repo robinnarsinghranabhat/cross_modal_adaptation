@@ -24,19 +24,18 @@ food_templates = [
 ]
 
 pets_templates = [
-    'a photo of a {}, a type of pet. But the image is unclear.'
+    'a photo of a {}, a type of pet. But the image is unclear.',
+    'a noisy image, possibly of a {}, a type of pet.'
 ]
 
-pets_templates_gn = [
-    'a photo of a {}, a type of pet. But the image is unclear.'
-]
 
 cars_templates = [
     'a photo of a {}. But the image is unclear.'
 ]
 
 dtd_templates = [
-    '{} texture. But the image is unclear.'
+    '{} texture. But the image is unclear.',
+    '{} texture. But the image is grainy.'
 ]
 
 caltech101_templates = [
@@ -59,19 +58,19 @@ eurosat_templates = [
 def corrupted_template(dataset_name, sn=1):
     sn = sn-1
     return  {
-        "oxford_pets": pets_templates[sn],
-        "oxford_flowers": flowers_templates[sn],
-        "fgvc_aircraft": aircraft_templates[sn],
-        "dtd": dtd_templates[sn],
-        "eurosat": eurosat_templates[sn],
-        "stanford_cars": cars_templates[sn],
-        "food101": food_templates[sn],
-        "sun397": sun397_templates[sn],
-        "caltech101": caltech101_templates[sn],
-        "ucf101": ucf101_templates[sn],
-        "imagenet": imagenet_templates[sn],
-        "imagenet_sketch": imagenet_templates[sn],
-        "imagenetv2": imagenet_templates[sn],
-        "imagenet_a": imagenet_templates[sn],
-        "imagenet_r": imagenet_templates[sn],
-    }[dataset_name]
+        "oxford_pets": pets_templates,
+        "oxford_flowers": flowers_templates,
+        "fgvc_aircraft": aircraft_templates,
+        "dtd": dtd_templates,
+        "eurosat": eurosat_templates,
+        "stanford_cars": cars_templates,
+        "food101": food_templates,
+        "sun397": sun397_templates,
+        "caltech101": caltech101_templates,
+        "ucf101": ucf101_templates,
+        "imagenet": imagenet_templates,
+        "imagenet_sketch": imagenet_templates,
+        "imagenetv2": imagenet_templates,
+        "imagenet_a": imagenet_templates,
+        "imagenet_r": imagenet_templates,
+    }[dataset_name][sn]

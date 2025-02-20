@@ -32,6 +32,5 @@ def get_custom_template(dataset_name, experiment_name, noise_type):
     assert noise_type in corruptions
     prompt_number = experiment_name.replace(noise_type + "_", "")
     assert isinstance(int(prompt_number), int)
-
     noise_template = corrupted_template(dataset_name, int(prompt_number))
     return [noise_template]
