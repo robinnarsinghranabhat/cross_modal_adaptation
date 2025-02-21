@@ -12,7 +12,7 @@ imagenet_templates = [
 flowers_templates = [
     'a photo of a {}, a type of flower. But the image is unclear.',
     'a noisy image, possibly of a {}, a type of flower.',
-    'a foggy image, possibly of a {}, a type of flower.',
+    'a pixelated image, possibly of a {}, a type of flower.',
     'a blurry image, possibly of a {}, a type of flower.',
 ]
 
@@ -29,7 +29,7 @@ food_templates = [
 pets_templates = [
     'a photo of a {}, a type of pet. But the image is unclear.',
     'a noisy image, possibly of a {}, a type of pet.',
-    'a foggy image, possibly of a {}, a type of pet.',
+    'a pixelated image, possibly of a {}, a type of pet.',
     'a blurry image, possibly of a {}, a type of pet.',
 ]
 
@@ -42,14 +42,14 @@ dtd_templates = [
     '{} texture. But the image is unclear.',
     # '{} texture. But the image is grainy.',
      'a noisy texture, possibly of a {}.',
-     'a foggy texture, possibly of a {}.',
+     'a pixelated texture, possibly of a {}.',
      'a blurry texture, possibly of a {}.',
 ]
 
 caltech101_templates = [
     'a photo of a {}. But the image is unclear.'
     'a noisy image, possibly of a {}.',
-    'a foggy image, possibly of a {}.',
+    'a pixelated image, possibly of a {}.',
     'a blurry image, possibly of a {}.',
 ]
 
