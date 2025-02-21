@@ -47,7 +47,7 @@ dtd_templates = [
 ]
 
 caltech101_templates = [
-    'a photo of a {}. But the image is unclear.'
+    'a photo of a {}. But the image is unclear.',
     'a noisy image, possibly of a {}.',
     'a pixelated image, possibly of a {}.',
     'a blurry image, possibly of a {}.',
