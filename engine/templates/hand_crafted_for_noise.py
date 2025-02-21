@@ -10,7 +10,8 @@ imagenet_templates = [
 ]
 
 flowers_templates = [
-    'a photo of a {}, a type of flower. But the image is unclear.'
+    'a photo of a {}, a type of flower. But the image is unclear.',
+    'a noisy image, possibly of a {}, a type of flower.'
 ]
 
 
@@ -35,7 +36,8 @@ cars_templates = [
 
 dtd_templates = [
     '{} texture. But the image is unclear.',
-    '{} texture. But the image is grainy.'
+    '{} texture. But the image is grainy.',
+     'a noisy texture, possibly of a {}.'
 ]
 
 caltech101_templates = [
