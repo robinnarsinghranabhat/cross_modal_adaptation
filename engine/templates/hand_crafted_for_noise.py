@@ -20,14 +20,12 @@ flowers_templates = [
 ## Other semantic-prompts
 flowers_templates_others = [ "a close-up photo of a {}, a type of flower",
 "a specimen of a {}, a type of flower",
-# "a variety {}, a type of flower",
 "a seasonal blooming {}, a type of flower"
 ]
 
 ## Non-sensical prompts
 flowers_templates_random = ["a twelve-sided {}, a type of flower",
 "a backwards facing {}, a type of flower",
-"a conceptual {}, with flower properties",
 "a theoretical {}, exhibiting petal structures",
 ]
 
@@ -48,6 +46,20 @@ pets_templates = [
     'a blurry image, possibly of a {}, a type of pet.',
 ]
 
+
+pets_templates_others = [
+    'a close-up photo of a {}, a type of pet.',
+    'a well-groomed {}, a type of pet.',
+    'a domestic {}, a type of pet.',
+    # 'a young {}, a type of pet.',
+
+]
+
+pets_templates_random = [
+    'a twelve-sided {}, a type of pet.',
+    'a backwards facing {}, a type of pet.',
+    'a theoretical {}, exhibiting fur patterns.',
+]
 
 cars_templates = [
     'a photo of a {}. But the image is unclear.'
@@ -102,8 +114,8 @@ def corrupted_template(dataset_name, sn=1, prompt_category=""):
     if prompt_category:
         assert prompt_category in ["random", "others"]
         if prompt_category == "random":
-            prompt_maps[dataset_name] = flowers_templates_random
+            prompt_maps[dataset_name] = pets_templates_random
         elif prompt_category == "others":
-            prompt_maps[dataset_name] = flowers_templates_others            
+            prompt_maps[dataset_name] = pets_templates_others            
 
     return prompt_maps[dataset_name][sn]

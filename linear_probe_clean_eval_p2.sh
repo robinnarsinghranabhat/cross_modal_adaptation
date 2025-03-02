@@ -52,8 +52,8 @@ declare -a DATASETS=(
                     #  "eurosat"
                     #  "fgvc_aircraft"
                     #  "food101"
-                    "oxford_flowers"
-                    #  "oxford_pets"
+                    # "oxford_flowers"
+                     "oxford_pets"
                     #  "stanford_cars"
                     #  "sun397"
                     #  "ucf101"
@@ -62,10 +62,10 @@ TOTAL=$(( TOTAL * ${#DATASETS[@]} ))
 
 declare -a ALL_SHOTS=(
     "1"
-    # "2"
-    # "4"
-    # "8"
-    # "16"
+    "2"
+    "4"
+    "8"
+    "16"
 )
 TOTAL=$(( TOTAL * ${#ALL_SHOTS[@]} ))
 
@@ -130,6 +130,16 @@ declare -a EXPERIMENT_NAMES=(
                     "defocus_blur_1_others"
                     "defocus_blur_2_others"
                     "defocus_blur_3_others"
+
+
+                    # "pixelate_1_random"
+                    # "pixelate_2_random"
+                    # "pixelate_3_random"
+
+                    # "pixelate_1_others"
+                    # "pixelate_2_others"
+                    # "pixelate_3_others"
+
                      )
 TOTAL=$(( TOTAL * ${#EXPERIMENT_NAMES[@]} ))
 
@@ -217,7 +227,7 @@ do
                                                                 --modality ${MODALITY} \
                                                                 --experiment_name ${EXP_NAME}"
                                                                 echo $COMMAND
-                                                                # eval $COMMAND
+                                                                eval $COMMAND
                                                         done
                                                     done
                                                 done

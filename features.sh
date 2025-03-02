@@ -48,8 +48,8 @@ declare -a DATASETS=(
                     #  "eurosat"
                     #  "fgvc_aircraft"
                     #  "food101"
-                     "oxford_flowers"
-                    #  "oxford_pets"
+                    # "oxford_flowers"
+                    "oxford_pets"
                     #  "stanford_cars"
                     #  "sun397"
                     #  "ucf101"
@@ -85,6 +85,16 @@ declare -a NOISE_TYPES=(
                     "defocus_blur--2--others"
                     "defocus_blur--3--others"
                     # "defocus_blur--4--others"
+
+                    # ## Pixelate
+                    # "pixelate--1--random"
+                    # "pixelate--2--random"
+                    # "pixelate--3--random"
+                    # # "pixelate--4--random"
+
+                    # "pixelate--1--others"
+                    # "pixelate--2--others"
+                    # "pixelate--3--others"
 
                      )
 TOTAL=$(( TOTAL * ${#NOISE_TYPES[@]} ))
