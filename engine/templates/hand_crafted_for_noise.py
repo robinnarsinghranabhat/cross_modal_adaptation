@@ -17,6 +17,21 @@ flowers_templates = [
 ]
 
 
+## Other semantic-prompts
+flowers_templates_others = [ "a close-up photo of a {}, a type of flower",
+"a specimen of a {}, a type of flower",
+# "a variety {}, a type of flower",
+"a seasonal blooming {}, a type of flower"
+]
+
+## Non-sensical prompts
+flowers_templates_random = ["a twelve-sided {}, a type of flower",
+"a backwards facing {}, a type of flower",
+"a conceptual {}, with flower properties",
+"a theoretical {}, exhibiting petal structures",
+]
+
+
 aircraft_templates = [
     'a photo of a {}, a type of aircraft. But the image is unclear.'
 ]
@@ -40,7 +55,6 @@ cars_templates = [
 
 dtd_templates = [
     '{} texture. But the image is unclear.',
-    # '{} texture. But the image is grainy.',
      'a noisy texture, possibly of a {}.',
      'a pixelated texture, possibly of a {}.',
      'a blurry texture, possibly of a {}.',
@@ -66,9 +80,9 @@ eurosat_templates = [
 ]
 
 
-def corrupted_template(dataset_name, sn=1):
+def corrupted_template(dataset_name, sn=1, prompt_category=""):
     sn = sn-1
-    return  {
+    prompt_maps =   {
         "oxford_pets": pets_templates,
         "oxford_flowers": flowers_templates,
         "fgvc_aircraft": aircraft_templates,
@@ -84,4 +98,12 @@ def corrupted_template(dataset_name, sn=1):
         "imagenetv2": imagenet_templates,
         "imagenet_a": imagenet_templates,
         "imagenet_r": imagenet_templates,
-    }[dataset_name][sn]
+    }
+    if prompt_category:
+        assert prompt_category in ["random", "others"]
+        if prompt_category == "random":
+            prompt_maps[dataset_name] = flowers_templates_random
+        elif prompt_category == "others":
+            prompt_maps[dataset_name] = flowers_templates_others            
+
+    return prompt_maps[dataset_name][sn]

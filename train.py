@@ -285,6 +285,11 @@ def main(args):
         args.experiment_name = '_'.join(splitted_arg)
         args.eval_noise_type = splitted_arg[0]
 
+    elif len(splitted_arg) == 3:
+        args.experiment_name = '_'.join(splitted_arg)
+        args.eval_noise_type = splitted_arg[0]
+        args.prompt_category = splitted_arg[2]
+
     image_encoder_dir = get_image_encoder_dir(
         args.feature_dir,
         args.clip_encoder,
@@ -362,6 +367,7 @@ def main(args):
         args.image_layer_idx,
         noise_type=args.eval_noise_type, # want this ! test on noisy features
     )
+    
     test_features = torch.load(test_features_path)
     test_dataset = TensorDataset(
         test_features['features'],

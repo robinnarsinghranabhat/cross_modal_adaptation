@@ -23,14 +23,18 @@ def get_templates(dataset_name, text_augmentation, custom_template=None):
     
 
 
-def get_custom_template(dataset_name, experiment_name, noise_type):
+def get_custom_template(dataset_name, experiment_name, noise_type, prompt_category=""):
     """
         Usage : 
             experiment_name="gaussian_noise_1", dataset_name="oxford_flowers"
             Gets `1st` `gaussian-noise-included` text-label for `oxford_flowers` ""
     """
     assert noise_type in corruptions
-    prompt_number = experiment_name.replace(noise_type + "_", "")
+    if prompt_category:
+        # defocus_blur_1_random
+        prompt_number = experiment_name.split("_")[-2]
+    else:
+        prompt_number = experiment_name.replace(noise_type + "_", "")
     assert isinstance(int(prompt_number), int)
-    noise_template = corrupted_template(dataset_name, int(prompt_number))
+    noise_template = corrupted_template(dataset_name, int(prompt_number), prompt_category=prompt_category)
     return [noise_template]

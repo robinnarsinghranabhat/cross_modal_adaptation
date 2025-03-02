@@ -1,3 +1,7 @@
+## Run CLEAN-EVAL of Cross-Modal with a different Text-Data
+## Example : --experiment_name gaussian_noise_1"
+## Ignore NOISE_TYPE
+
 #!/bin/bash
 
 TOTAL=1
@@ -43,12 +47,12 @@ TOTAL=$(( TOTAL * ${#IMAGE_VIEWS[@]} ))
 declare -a DATASETS=(
                     #  "imagenet"
                     #  "caltech101"
-                     "dtd"
+                    # "dtd"
                     #  "eurosat"
                     #  "fgvc_aircraft"
                     #  "food101"
-                    #  "oxford_flowers"
-                    #  "oxford_pets"
+                    "oxford_flowers"
+                    # "oxford_pets"
                     #  "stanford_cars"
                     #  "sun397"
                     #  "ucf101"
@@ -104,12 +108,6 @@ declare -a HYPERS=(
 )
 TOTAL=$(( TOTAL * ${#HYPERS[@]} ))
 
-declare -a NOISE_TYPES=(
-                    ""
-                    "gaussian_noise"
-                    "gaussian_noise--1"
-                     )
-TOTAL=$(( TOTAL * ${#NOISE_TYPES[@]} ))
 
 echo "ENCODERS: ${ENCODERS[@]}"
 echo "IMAGE_LAYER_IDX: ${IMAGE_LAYER_IDX[@]}"
@@ -125,7 +123,6 @@ echo "HEADS: ${HEADS[@]}"
 echo "INITS: ${INITS[@]}"
 echo "LOGITS: ${LOGITS[@]}"
 echo "HYPERS: ${HYPERS[@]}"
-echo "NOISE_TYPES: ${NOISE_TYPES[@]}"
 echo "TOTAL: $TOTAL"
 
 COUNTER=1

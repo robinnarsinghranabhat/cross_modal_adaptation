@@ -74,6 +74,15 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    "--prompt_category",
+    type=str,
+    default="",
+    # choices=dataset_classes.keys(),
+    help="Type of Prompt : other, random",
+)
+
+
+parser.add_argument(
     "--eval_noise_type",
     type=str,
     default="",

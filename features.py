@@ -62,7 +62,9 @@ def get_test_features_path(dataset,
                            feature_dir,
                            clip_encoder,
                            image_layer_idx,
-                           noise_type=""):
+                           noise_type="",
+                           prompt_category=""):
+    
     test_features_path = os.path.join(
         get_image_encoder_dir(feature_dir, clip_encoder, image_layer_idx),
         dataset,
@@ -200,7 +202,6 @@ def prepare_text_features(clip_model, args, lab2cname, device="cuda"):
         args.text_augmentation,
         args.experiment_name,
     )
-
     makedirs(os.path.dirname(text_features_path))
 
     if os.path.exists(text_features_path):
@@ -221,7 +222,7 @@ def prepare_text_features(clip_model, args, lab2cname, device="cuda"):
         # Select from set of prepared templates
         
         if not args.custom_template and (args.experiment_name and args.noise_type):
-            args.custom_template = get_custom_template(args.dataset, args.experiment_name, args.noise_type)
+            args.custom_template = get_custom_template(args.dataset, args.experiment_name, args.noise_type, args.prompt_category)
 
         text_features = extract_text_features(
             args.dataset, args.text_augmentation, text_encoder, lab2cname, custom_template=args.custom_template ,device=device)
@@ -308,6 +309,7 @@ def prepare_test_image_features(clip_model, args, benchmark_test, device="cuda")
         args.clip_encoder,
         args.image_layer_idx,
         noise_type=args.noise_type,
+        prompt_category=args.prompt_category
     )
 
     makedirs(os.path.dirname(test_features_path))
@@ -372,12 +374,19 @@ def main(args):
         ## Copy contents of dataset to noise_dataset
         ## Overwrite the images
 
-    ## noise_type : gaussian_noise, gaussian_noise 1
+    ## noise_type : gaussian_noise, defocus_blur--1 
     ## second one means, use another text prompt
     splitted_arg = args.noise_type.split('--')
+    # import pdb; pdb.set_trace()
     if len(splitted_arg) == 2:
         args.experiment_name = '_'.join(splitted_arg)
         args.noise_type = splitted_arg[0]
+    # defocus_blur--1--other | choose form other semantic-prompt. 
+    # defocus_blur--2--nosense | choose 2nd random prompt
+    elif len(splitted_arg) == 3:
+        args.experiment_name = '_'.join(splitted_arg)
+        args.noise_type = splitted_arg[0]
+        args.prompt_category = splitted_arg[2]
 
 
     prepare_text_features(clip_model, args, few_shot_benchmark['lab2cname'], device=device)

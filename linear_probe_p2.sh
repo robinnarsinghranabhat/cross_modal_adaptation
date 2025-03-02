@@ -56,11 +56,11 @@ declare -a DATASETS=(
 TOTAL=$(( TOTAL * ${#DATASETS[@]} ))
 
 declare -a ALL_SHOTS=(
-    "1"
-    "2"
-    "4"
-    # "8"
-    # "16"
+    # "1"
+    # "2"
+    # "4"
+    "8"
+    "16"
 )
 TOTAL=$(( TOTAL * ${#ALL_SHOTS[@]} ))
 
@@ -74,7 +74,7 @@ declare -a ALL_SEEDS=(
 TOTAL=$(( TOTAL * ${#ALL_SEEDS[@]} ))
 
 declare -a MODALITIES=(
-    # "uni_modal"
+    "uni_modal"
     "cross_modal"
 )
 TOTAL=$(( TOTAL * ${#MODALITIES[@]} ))
@@ -107,7 +107,20 @@ TOTAL=$(( TOTAL * ${#HYPERS[@]} ))
 declare -a NOISE_TYPES=(
                     # ""
                     # "gaussian_noise"
-                    "gaussian_noise--2"
+                    # "gaussian_noise--1"
+                    # "gaussian_noise--2"
+                    # "gaussian_noise--3"
+                    # "gaussian_noise--4"
+                    "defocus_blur"
+                    "defocus_blur--1"
+                    "defocus_blur--2"
+                    "defocus_blur--3"
+                    "defocus_blur--4"
+                    # "pixelate"
+                    # "pixelate--1"
+                    # "pixelate--2"
+                    # "pixelate--3"
+                    # "pixelate--4"
                      )
 TOTAL=$(( TOTAL * ${#NOISE_TYPES[@]} ))
 

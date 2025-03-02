@@ -4,7 +4,7 @@ from PIL import Image
 from imagenet_c import corrupt
 
 
-SEVERITY=5
+SEVERITY=3
 CORRUPTION_NAME="gaussian_noise"
 
 # Directories
@@ -25,5 +25,6 @@ for filename in os.listdir(input_dir):
         # Save corrupted image
         corrupted_image = Image.fromarray(corrupted_image.astype(np.uint8))
         corrupted_image.save(os.path.join(output_dir, filename))
+        break
 
 print("Corruption process completed!")

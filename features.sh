@@ -43,13 +43,13 @@ TOTAL=$(( TOTAL * ${#IMAGE_VIEWS[@]} ))
 
 declare -a DATASETS=(
                     #  "imagenet"
-                     "caltech101"
-                     "dtd"
+                    #  "caltech101"
+                    #  "dtd"
                     #  "eurosat"
                     #  "fgvc_aircraft"
                     #  "food101"
                      "oxford_flowers"
-                     "oxford_pets"
+                    #  "oxford_pets"
                     #  "stanford_cars"
                     #  "sun397"
                     #  "ucf101"
@@ -60,20 +60,40 @@ TOTAL=$(( TOTAL * ${#DATASETS[@]} ))
 
 declare -a NOISE_TYPES=(
                     ""
-                    "gaussian_noise"
-                    "gaussian_noise--1"
+                    # "gaussian_noise"
+                    # "gaussian_noise--1"
+                    # "gaussian_noise--2"
+                    # "gaussian_noise--3"
+                    # ""gaussian_noise--4"
+                    # "defocus_blur"
+                    # "defocus_blur--1"
+                    # "defocus_blur--2"
+                    # "defocus_blur--3"
+                    # "defocus_blur--4"
+                    # "pixelate"
+                    # "pixelate--1"
+                    # "pixelate--2"
+                    # "pixelate--3"
+                    # "pixelate--4"
+                    
+                    "defocus_blur--1--random"
+                    "defocus_blur--2--random"
+                    "defocus_blur--3--random"
+                    # "defocus_blur--4--random"
+
+                    "defocus_blur--1--others"
+                    "defocus_blur--2--others"
+                    "defocus_blur--3--others"
+                    # "defocus_blur--4--others"
+
                      )
 TOTAL=$(( TOTAL * ${#NOISE_TYPES[@]} ))
 
-# declare -a EXPERIMENT_NAMES=(
-#                     "1"
-#                      )
-# TOTAL=$(( TOTAL * ${#EXPERIMENT_NAMES[@]} ))
 
 declare -a ALL_SHOTS=(
     "1"
-    "2"
-    "4"
+    # "2"
+    # "4"
     # "8"
     # "16"
 )
@@ -98,7 +118,6 @@ echo "DATASETS: ${DATASETS[@]}"
 echo "ALL_SHOTS: ${ALL_SHOTS[@]}"
 echo "ALL_SEEDS: ${ALL_SEEDS[@]}"
 echo "NOISE_TYPES: ${NOISE_TYPES[@]}"
-# echo "EXPERIMENT_NAMES: ${EXPERIMENT_NAMES[@]}"
 echo "TOTAL: $TOTAL"
 
 COUNTER=1
@@ -132,9 +151,7 @@ do
                                     echo "SEED: $SEED"
                                     for NOISE_TYPE in "${NOISE_TYPES[@]}"
                                         do
-                                            # echo "NOISE_TYPE: $NOISE_TYPE"
-                                            # for EXP_NAME in "${EXPERIMENT_NAMES[@]}"
-                                            #     do
+
                                                     # echo "EXP_NAME: $EXP_NAME"
                                                     echo "COUNTER: $COUNTER/$TOTAL"
                                                     echo " "
@@ -167,3 +184,14 @@ do
         done
     done
 done
+
+
+ 417534 robin.r+  20   0 2013476 218632 132480 R  23.9   0.1   0:00.72 python                                                                                                                                         
+ 417540 robin.r+  20   0 2013476 215880 132220 R  23.9   0.1   0:00.72 python                                                                                                                                         
+ 417528 robin.r+  20   0 2288736 252908 136836 R  13.6   0.1   0:01.34 python                                                                                                                                         
+ 417531 robin.r+  20   0 2288736 261064 148824 R  13.3   0.1   0:01.21 python                                                                                                                                         
+
+nohup bash features.sh > caltech_features.log 2>&1 &
+
+
+

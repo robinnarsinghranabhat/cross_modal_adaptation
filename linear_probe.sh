@@ -28,7 +28,7 @@ TOTAL=$(( TOTAL * ${#TEXT_AUGS[@]} ))
 
 declare -a IMAGE_AUGS=(
                       "none"
-                      "flip" 
+                    #   "flip" 
                     #   "randomcrop"
                      )
 TOTAL=$(( TOTAL * ${#IMAGE_AUGS[@]} ))
@@ -43,11 +43,11 @@ TOTAL=$(( TOTAL * ${#IMAGE_VIEWS[@]} ))
 declare -a DATASETS=(
                     #  "imagenet"
                     #  "caltech101"
-                     "dtd"
+                    #  "dtd"
                     #  "eurosat"
                     #  "fgvc_aircraft"
                     #  "food101"
-                    #  "oxford_flowers"
+                     "oxford_flowers"
                     #  "oxford_pets"
                     #  "stanford_cars"
                     #  "sun397"
@@ -57,8 +57,8 @@ TOTAL=$(( TOTAL * ${#DATASETS[@]} ))
 
 declare -a ALL_SHOTS=(
     "1"
-    "2"
-    "4"
+    # "2"
+    # "4"
     # "8"
     # "16"
 )
@@ -74,7 +74,7 @@ declare -a ALL_SEEDS=(
 TOTAL=$(( TOTAL * ${#ALL_SEEDS[@]} ))
 
 declare -a MODALITIES=(
-    "uni_modal"
+    # "uni_modal"
     "cross_modal"
 )
 TOTAL=$(( TOTAL * ${#MODALITIES[@]} ))
@@ -105,9 +105,30 @@ declare -a HYPERS=(
 TOTAL=$(( TOTAL * ${#HYPERS[@]} ))
 
 declare -a NOISE_TYPES=(
-                    ""
-                    "gaussian_noise"
-                    "gaussian_noise--1"
+                    # ""
+                    # "gaussian_noise"
+                    # "gaussian_noise--1"
+                    # "gaussian_noise--2"
+                    # "gaussian_noise--3"
+                    # "gaussian_noise--4"
+                    # "defocus_blur"
+                    # "defocus_blur--1"
+                    # "defocus_blur--2"
+                    # "defocus_blur--3"
+                    # "defocus_blur--4"
+                    # "pixelate"
+                    # "pixelate--1"
+                    # "pixelate--2"
+                    # "pixelate--3"
+                    # "pixelate--4"
+                    "defocus_blur--1--random"
+                    "defocus_blur--2--random"
+                    "defocus_blur--3--random"
+                    # "defocus_blur--4--random"
+
+                    "defocus_blur--1--others"
+                    "defocus_blur--2--others"
+                    "defocus_blur--3--others"
                      )
 TOTAL=$(( TOTAL * ${#NOISE_TYPES[@]} ))
 
