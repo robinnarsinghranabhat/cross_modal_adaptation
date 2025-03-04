@@ -1,6 +1,7 @@
 ## Run CLEAN-EVAL of Cross-Modal with a different Text-Data
-## Example : --experiment_name gaussian_noise_1"
+## Example : --experiment_name gaussian_noise_3"
 ## Ignore NOISE_TYPE
+
 
 #!/bin/bash
 
@@ -32,7 +33,7 @@ TOTAL=$(( TOTAL * ${#TEXT_AUGS[@]} ))
 
 declare -a IMAGE_AUGS=(
                       "none"
-                      "flip" 
+                    #   "flip" 
                     #   "randomcrop"
                      )
 TOTAL=$(( TOTAL * ${#IMAGE_AUGS[@]} ))
@@ -46,13 +47,13 @@ TOTAL=$(( TOTAL * ${#IMAGE_VIEWS[@]} ))
 
 declare -a DATASETS=(
                     #  "imagenet"
-                    #  "caltech101"
+                    # "caltech101"
                     # "dtd"
                     #  "eurosat"
                     #  "fgvc_aircraft"
                     #  "food101"
                     "oxford_flowers"
-                    # "oxford_pets"
+                    #  "oxford_pets"
                     #  "stanford_cars"
                     #  "sun397"
                     #  "ucf101"
@@ -63,7 +64,7 @@ declare -a ALL_SHOTS=(
     "1"
     "2"
     "4"
-    # "8"
+    "8"
     # "16"
 )
 TOTAL=$(( TOTAL * ${#ALL_SHOTS[@]} ))
@@ -107,6 +108,47 @@ declare -a HYPERS=(
     # "partial"
 )
 TOTAL=$(( TOTAL * ${#HYPERS[@]} ))
+
+declare -a EXPERIMENT_NAMES=(
+                    "gaussian_noise_1"
+                    "gaussian_noise_2"
+                    "gaussian_noise_3"
+                    "gaussian_noise_4"
+                    # "defocus_blur_1"
+                    # "defocus_blur_2"
+                    # "defocus_blur_3"
+                    # "defocus_blur_4"
+                    "pixelate_1"
+                    "pixelate_2"
+                    "pixelate_3"
+                    "pixelate_4"
+
+                    # "defocus_blur_1_random"
+                    # "defocus_blur_2_random"
+                    # "defocus_blur_3_random"
+
+                    # "defocus_blur_1_others"
+                    # "defocus_blur_2_others"
+                    # "defocus_blur_3_others"
+
+                    "gaussian_noise_1_random"
+                    "gaussian_noise_2_random"
+                    "gaussian_noise_3_random"
+
+                    "gaussian_noise_1_others"
+                    "gaussian_noise_2_others"
+                    "gaussian_noise_3_others"
+
+                    "pixelate_1_random"
+                    "pixelate_2_random"
+                    "pixelate_3_random"
+
+                    "pixelate_1_others"
+                    "pixelate_2_others"
+                    "pixelate_3_others"
+                    
+                     )
+TOTAL=$(( TOTAL * ${#EXPERIMENT_NAMES[@]} ))
 
 
 echo "ENCODERS: ${ENCODERS[@]}"
@@ -169,9 +211,9 @@ do
                                                     for MODALITY in "${MODALITIES[@]}"
                                                     do
                                                         echo "MODALITY: $MODALITY"
-                                                        # for NOISE_TYPE in "${NOISE_TYPES[@]}"
-                                                        #     do
-                                                                # echo "NOISE_TYPE: $NOISE_TYPE"
+                                                        for EXP_NAME in "${EXPERIMENT_NAMES[@]}"
+                                                        do 
+                                                                echo "EXP_NAME: $EXP_NAME"
                                                                 echo "COUNTER: $COUNTER/$TOTAL"
                                                                 echo " "
                                                                 COUNTER=$(( COUNTER + 1 ))
@@ -190,15 +232,10 @@ do
                                                                 --logit ${LOGIT} \
                                                                 --hyperparams ${HYPER} \
                                                                 --modality ${MODALITY} \
-                                                                --experiment_name gaussian_noise_1" \
-                                                                # Add --noise_type only if it's not an empty string
-                                                                # if [ -n "${NOISE_TYPE}" ]; then
-                                                                #     COMMAND+=" --eval_noise_type ${NOISE_TYPE}"
-                                                                # fi
+                                                                --experiment_name ${EXP_NAME}"
                                                                 echo $COMMAND
-                                                                # Execute the command
-                                                                eval $COMMAND
-                                                            # done
+                                                                # eval $COMMAND
+                                                        done
                                                     done
                                                 done
                                             done
@@ -213,3 +250,5 @@ do
         done
     done
 done
+
+

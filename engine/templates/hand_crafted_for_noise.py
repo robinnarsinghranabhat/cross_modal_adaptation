@@ -27,7 +27,7 @@ flowers_templates_others = [ "a close-up photo of a {}, a type of flower",
 ## Non-sensical prompts
 flowers_templates_random = ["a twelve-sided {}, a type of flower",
 "a backwards facing {}, a type of flower",
-"a conceptual {}, with flower properties",
+# "a conceptual {}, with flower properties",
 "a theoretical {}, exhibiting petal structures",
 ]
 

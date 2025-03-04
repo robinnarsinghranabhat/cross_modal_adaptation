@@ -62,9 +62,9 @@ TOTAL=$(( TOTAL * ${#DATASETS[@]} ))
 
 declare -a ALL_SHOTS=(
     "1"
-    # "2"
-    # "4"
-    # "8"
+    "2"
+    "4"
+    "8"
     # "16"
 )
 TOTAL=$(( TOTAL * ${#ALL_SHOTS[@]} ))
@@ -110,26 +110,43 @@ declare -a HYPERS=(
 TOTAL=$(( TOTAL * ${#HYPERS[@]} ))
 
 declare -a EXPERIMENT_NAMES=(
-                    # "gaussian_noise_1"
-                    # "gaussian_noise_2"
-                    # "gaussian_noise_3"
-                    # "gaussian_noise_4"
+                    "gaussian_noise_1"
+                    "gaussian_noise_2"
+                    "gaussian_noise_3"
+                    "gaussian_noise_4"
                     # "defocus_blur_1"
                     # "defocus_blur_2"
                     # "defocus_blur_3"
                     # "defocus_blur_4"
-                    # "pixelate_1"
-                    # "pixelate_2"
-                    # "pixelate_3"
-                    # "pixelate_4"
+                    "pixelate_1"
+                    "pixelate_2"
+                    "pixelate_3"
+                    "pixelate_4"
 
-                    "defocus_blur_1_random"
-                    "defocus_blur_2_random"
-                    "defocus_blur_3_random"
+                    # "defocus_blur_1_random"
+                    # "defocus_blur_2_random"
+                    # "defocus_blur_3_random"
 
-                    "defocus_blur_1_others"
-                    "defocus_blur_2_others"
-                    "defocus_blur_3_others"
+                    # "defocus_blur_1_others"
+                    # "defocus_blur_2_others"
+                    # "defocus_blur_3_others"
+
+                    "gaussian_noise_1_random"
+                    "gaussian_noise_2_random"
+                    "gaussian_noise_3_random"
+
+                    "gaussian_noise_1_others"
+                    "gaussian_noise_2_others"
+                    "gaussian_noise_3_others"
+
+                    "pixelate_1_random"
+                    "pixelate_2_random"
+                    "pixelate_3_random"
+
+                    "pixelate_1_others"
+                    "pixelate_2_others"
+                    "pixelate_3_others"
+                    
                      )
 TOTAL=$(( TOTAL * ${#EXPERIMENT_NAMES[@]} ))
 
@@ -235,4 +252,3 @@ do
 done
 
 
-nohup bash linear_probe_clean_eval.sh > oxford_flowers_lin_probe_ce.log
