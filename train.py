@@ -367,7 +367,6 @@ def main(args):
         args.image_layer_idx,
         noise_type=args.eval_noise_type, # want this ! test on noisy features
     )
-    
     test_features = torch.load(test_features_path)
     test_dataset = TensorDataset(
         test_features['features'],

@@ -367,7 +367,6 @@ def main(args):
     )
     
     save_dir = get_save_dir(args)
-    import pdb; pdb.set_trace()
     hyperparams = HYPER_DICT[args.hyperparams]
     # filter out invalid batch sizes
     VALID_BATCH_SIZES = get_valid_batch_sizes(hyperparams, text_dataset, image_train_dataset, modality=args.modality)

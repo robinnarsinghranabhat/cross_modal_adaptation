@@ -47,6 +47,28 @@ flowers_templates = [
     "a photo of a small {}.",
 ]
 
+flowers_templates_na = [
+    'a photo of a {}, a type of flower. But the image is unclear.',
+    'a noisy image of a {}, a type of flower.',
+    # 'a pixelated image, possibly of a {}, a type of flower.',
+    # 'a blurry image, possibly of a {}, a type of flower.',
+    'a photo of a {}, a type of flower, with visible digital noise.',
+    'a grainy image showing a {}, a type of flower.',
+    'a speckled photo of a {}, a type of flower, with salt and pepper noise.',
+    'a low-quality photo of a {}, a type of flower, with visible noise artifacts.',
+
+    'a motion-blurred image of a {}, a type of flower.',
+    'an out-of-focus picture showing a {}, a type of flower.',
+    'a photo of a {}, a type of flower, captured with camera shake.',
+    'a gaussian-blurred image of a {}, a type of flower.',
+
+    'a foggy image of a {}, a type of flower.',
+    'a photo of a {}, a type of flower, taken in the snow.',
+    'a rain-obscured image of a {}, a type of flower.',
+    'a photo of a {}, a type of flower, taken during frost.',
+]
+
+
 aircraft_templates = [
   "a rendering of a {}.",
   "This is a photo of a {}.",
@@ -118,6 +140,50 @@ pets_templates = [
     "a photo of an {}.",
     "a photo of a {}.",
     "This is a photo of a {}.",
+]
+
+
+pets_templates_na = [
+    # Clarity Issues
+    "a photo of a {}, a type of pet. But the image is unclear.",
+    "an out-of-focus picture of a {}, a type of pet.",
+    "a blurry photo showing a {}.",
+    
+    # Noise-Related
+    "a noisy image of a {}, a type of pet.",
+    "a photo of a {}, with visible digital noise.",
+    "a grainy image showing a {}, a common pet.",
+    "a speckled photo of a {}, with salt and pepper noise.",
+    "a low-quality photo of my {}, with visible noise artifacts.",
+    
+    # Motion and Camera Blur
+    "a motion-blurred image of my {}.",
+    "a photo of a {}, captured with camera shake.",
+    "a gaussian-blurred image of a pet {}.",
+    
+    # Weather Conditions
+    "a foggy image of a {}.",
+    "a photo of my {}, taken in the snow.",
+    "a rain-obscured image of a {}.",
+    "a photo of a {}, taken during frost or fog.",
+    
+    # Digital Artifacts
+    "a pixelated, low-resolution image of my {}.",
+    "a jpeg-compressed photo of a {}.",
+    "a digitally corrupted image showing a {}.",
+    "a photo of my {}, with compression artifacts.",
+    
+    # Lighting Issues
+    "an overexposed image of a {}.",
+    "an underexposed, dark photo of my {}.",
+    "a backlit silhouette of a {}, a pet.",
+    "a photo of a {}, with uneven lighting.",
+    
+    # Color and Contrast
+    "a low-contrast image of my {}.",
+    "a photo of a {}, with distorted colors.",
+    "a saturated image showing a pet {}.",
+    "a photo of my {}, with incorrect white balance.",
 ]
 
 cars_templates = [
@@ -268,6 +334,24 @@ eurosat_templates = [
 MINED_TEMPLATES = {
     "oxford_pets": pets_templates,
     "oxford_flowers": flowers_templates,
+    "fgvc_aircraft": aircraft_templates,
+    "dtd": dtd_templates,
+    "eurosat": eurosat_templates,
+    "stanford_cars": cars_templates,
+    "food101": food_templates,
+    "sun397": sun397_templates,
+    "caltech101": caltech101_templates,
+    "ucf101": ucf101_templates,
+    "imagenet": imagenet_templates,
+    "imagenet_sketch": imagenet_templates,
+    "imagenetv2": imagenet_templates,
+    "imagenet_a": imagenet_templates,
+    "imagenet_r": imagenet_templates,
+}
+
+MINED_TEMPLATES_NA = {
+    "oxford_pets": pets_templates_na,
+    "oxford_flowers": flowers_templates_na,
     "fgvc_aircraft": aircraft_templates,
     "dtd": dtd_templates,
     "eurosat": eurosat_templates,

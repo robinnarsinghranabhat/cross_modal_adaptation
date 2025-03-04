@@ -1,10 +1,10 @@
 from engine.templates.template_pool import ALL_TEMPLATES
-from engine.templates.template_mining import MINED_TEMPLATES
+from engine.templates.template_mining import MINED_TEMPLATES, MINED_TEMPLATES_NA
 from engine.templates.hand_crafted import TIP_ADAPTER_TEMPLATES
 from engine.templates.hand_crafted_for_noise import corrupted_template
 from engine.config import corruptions
 
-def get_templates(dataset_name, text_augmentation, custom_template=None):
+def get_templates(dataset_name, text_augmentation, custom_template=None, experiment_name=""):
     """Return a list of templates to use for the given config."""
     if custom_template:
         return [custom_template] if not isinstance(custom_template, list) else custom_template
@@ -17,7 +17,10 @@ def get_templates(dataset_name, text_augmentation, custom_template=None):
     elif text_augmentation == 'ensemble':
         return ALL_TEMPLATES
     elif text_augmentation == 'template_mining':
-        return MINED_TEMPLATES[dataset_name]
+        if "noiseaware" in experiment_name.lower():
+            return MINED_TEMPLATES_NA[dataset_name]
+        else:
+            return MINED_TEMPLATES[dataset_name]
     else:
         raise ValueError('Unknown template: {}'.format(text_augmentation))
     

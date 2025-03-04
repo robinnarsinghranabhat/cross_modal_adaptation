@@ -100,7 +100,7 @@ def get_text_features_path(dataset,
 
 
 
-def extract_text_features(dataset, text_augmentation, text_encoder, lab2cname, custom_template=None, device="cuda"):
+def extract_text_features(dataset, text_augmentation, text_encoder, lab2cname, custom_template=None, device="cuda", experiment_name=""):
     # Extract text features from CLIP
     features_dict = {
         'features': None,
@@ -109,7 +109,7 @@ def extract_text_features(dataset, text_augmentation, text_encoder, lab2cname, c
         'prompts': {},
         'lab2cname': lab2cname,
     }
-    templates = get_templates(dataset, text_augmentation, custom_template)
+    templates = get_templates(dataset, text_augmentation, custom_template, experiment_name)
     text_encoder.feature_extractor.eval()
     with torch.no_grad():
         for label, cname in lab2cname.items():
@@ -221,11 +221,11 @@ def prepare_text_features(clip_model, args, lab2cname, device="cuda"):
         # We can choose between user's custom provided template, OR,
         # Select from set of prepared templates
         
-        if not args.custom_template and (args.experiment_name and args.noise_type):
+        if not args.custom_template and (args.experiment_name and args.noise_type and "template" not in args.text_augmentation):
             args.custom_template = get_custom_template(args.dataset, args.experiment_name, args.noise_type, args.prompt_category)
 
         text_features = extract_text_features(
-            args.dataset, args.text_augmentation, text_encoder, lab2cname, custom_template=args.custom_template ,device=device)
+            args.dataset, args.text_augmentation, text_encoder, lab2cname, custom_template=args.custom_template ,device=device, experiment_name=args.experiment_name)
         torch.save(text_features, text_features_path)
 
 
